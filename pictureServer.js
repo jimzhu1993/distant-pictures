@@ -92,7 +92,7 @@ parser.on('data', function(data) {
   if (data == 'light') {
     var imageName = 'peehole'
 
-    console.log('making a making a picture at'+ imageName); // Second, the name is logged to the console.
+    console.log('making a making a picture at '+ imageName); // Second, the name is logged to the console.
 
     //Third, the picture is  taken and saved to the `public/`` folder
     NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
@@ -107,9 +107,9 @@ parser.on('data', function(data) {
              console.log("The effect was applied to your image !");
          }
       }
-      effetc.blur(options, callback);
+      effect.blur(options, callback);
 
-    io.emit('newPicture',(imageName+'.jpg')); ///Lastly, the new name is send to the client web browser.
+    io.emit('newPicture',('target.jpg')); ///Lastly, the new name is send to the client web browser.
     /// The browser will take this new name and load the picture from the public folder.
 
   });
