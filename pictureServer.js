@@ -18,6 +18,7 @@ Notes: You will need to specify what port you would like the webapp to be
 served from. You will also need to include the serial port address as a command
 line input.
 */
+import blurify from 'blurify';
 
 var express = require('express'); // web server application
 var app = express(); // webapp
@@ -28,6 +29,7 @@ var SerialPort = require('serialport'); // serial library
 var Readline = SerialPort.parsers.Readline; // read serial data as lines
 //-- Addition:
 var NodeWebcam = require( "node-webcam" );// load the webcam module
+const lqip = require('lqip');
 
 //---------------------- WEBAPP SERVER SETUP ---------------------------------//
 // use express to create the simple webapp
@@ -95,8 +97,15 @@ parser.on('data', function(data) {
 
     //Third, the picture is  taken and saved to the `public/`` folder
     NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
+    const file = 'public/peehole.jpg';
+    lqip.palette(file).then(res => {
+      // the response will be sorted from most dominant colour to least
+      console.log(res); //  [ '#628792', '#bed4d5', '#5d4340', '#ba454d', '#c5dce4', '#551f24' ]
+    });
+
     io.emit('newPicture',(imageName+'.jpg')); ///Lastly, the new name is send to the client web browser.
     /// The browser will take this new name and load the picture from the public folder.
+
   });
 
   }
