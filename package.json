@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/FAR-Lab/distant-pictures#readme",
   "dependencies": {
+    "effect": "^1.0.4",
     "express": "^4.16.2",
-    "lqip": "^2.0.2",
     "node-webcam": "^0.4.3",
     "serialport": "^6.0.4",
     "socket.io": "^2.0.4"
