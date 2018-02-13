@@ -107,7 +107,7 @@ parser.on('data', function(data) {
 
 
 
-    io.emit('newPicture',('target.png')); ///Lastly, the new name is send to the client web browser.
+    io.emit('newPicture',('/public/target.png')); ///Lastly, the new name is send to the client web browser.
     /// The browser will take this new name and load the picture from the public folder.
 
   });
