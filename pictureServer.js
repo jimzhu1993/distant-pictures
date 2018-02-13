@@ -28,8 +28,7 @@ var SerialPort = require('serialport'); // serial library
 var Readline = SerialPort.parsers.Readline; // read serial data as lines
 //-- Addition:
 var NodeWebcam = require( "node-webcam" );// load the webcam module
-var fs = require('fs')
-var gm = require('gm').subClass({imageMagick: true});
+const filterous = require('filterous');
 
 //---------------------- WEBAPP SERVER SETUP ---------------------------------//
 // use express to create the simple webapp
@@ -98,16 +97,16 @@ parser.on('data', function(data) {
     //Third, the picture is  taken and saved to the `public/`` folder
     NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
 
-      gm('/public/peephole.jpg')
-      .resize(240, 240)
-      .noProfile()
-      .write('/public/target.png', function (err) {
-        if (!err) console.log('done');
+      fs.readFile('/public/peephole.jpg', (err, buffer) => {
+        if (err) throw err;
+        let f = filterous.importImage(buffer)
+          .applyFilter('brightness', 0.2)
+          .applyFilter('colorFilter', [255, 255, 0, 0.05])
+          .save('/public/target.jpg');
       });
 
 
-
-    io.emit('newPicture',('/public/target.png')); ///Lastly, the new name is send to the client web browser.
+    io.emit('newPicture',('target.jpg'); ///Lastly, the new name is send to the client web browser.
     /// The browser will take this new name and load the picture from the public folder.
 
   });
