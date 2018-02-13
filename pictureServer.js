@@ -95,17 +95,17 @@ parser.on('data', function(data) {
     console.log('making a making a picture at '+ imageName); // Second, the name is logged to the console.
 
     //Third, the picture is  taken and saved to the `public/`` folder
-    NodeWebcam.capture('/public/'+imageName, opts, function( err, data ) {
+    NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
 
-      Jimp.read("/public/peephole.jpg", function (err, lenna) {
+      Jimp.read("public/peephole.jpg", function (err, data) {
           if (err) throw err;
-          lenna.resize(256, 256)            // resize
+          data.resize(256, 256)            // resize
                .quality(60)                 // set JPEG quality
                .greyscale()                 // set greyscale
                .write("/public/target.jpg"); // save
       });
 
-    io.emit('newPicture',('target.jpg'); ///Lastly, the new name is send to the client web browser.
+    io.emit('newPicture',('target.jpg')); ///Lastly, the new name is send to the client web browser.
     /// The browser will take this new name and load the picture from the public folder.
 
   });
