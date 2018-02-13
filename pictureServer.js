@@ -28,8 +28,8 @@ var SerialPort = require('serialport'); // serial library
 var Readline = SerialPort.parsers.Readline; // read serial data as lines
 //-- Addition:
 var NodeWebcam = require( "node-webcam" );// load the webcam module
-var fs = require('fs');
-var magick = require('magick');
+var fs = require('fs')
+var gm = require('gm').subClass({imageMagick: true});
 
 //---------------------- WEBAPP SERVER SETUP ---------------------------------//
 // use express to create the simple webapp
@@ -98,22 +98,12 @@ parser.on('data', function(data) {
     //Third, the picture is  taken and saved to the `public/`` folder
     NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
 
-      var data = fs.readFileSync('/public/peephole.jpg');
-      var file = new magick.File(data);
-
-      // Perform operations
-      file.setFormat('PNG');
-      file.opacity(0.5);
-      file.resize(200, 250);
-      file.blur(5);
-      file.paint(5);
-
-      // Get file and release memory
-      var buffer = file.getBuffer();
-      file.release();
-
-      // Write to new file
-      fs.writeFileSync('public/target.png', buffer);
+      gm('/public/peephole.jpg')
+      .resize(240, 240)
+      .noProfile()
+      .write('/public/target.png', function (err) {
+        if (!err) console.log('done');
+      });
 
 
 
