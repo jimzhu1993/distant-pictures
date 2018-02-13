@@ -28,7 +28,7 @@ var SerialPort = require('serialport'); // serial library
 var Readline = SerialPort.parsers.Readline; // read serial data as lines
 //-- Addition:
 var NodeWebcam = require( "node-webcam" );// load the webcam module
-var effect = require('effect');
+const sharp = require('sharp');
 
 //---------------------- WEBAPP SERVER SETUP ---------------------------------//
 // use express to create the simple webapp
@@ -96,21 +96,6 @@ parser.on('data', function(data) {
 
     //Third, the picture is  taken and saved to the `public/`` folder
     NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
-      var options = {
-         image : '/public/peephole.jpg',
-         to : '/public/target.jpg', /* optional, if not specified, the main image will be overwritten */
-         level : 5, /* optional, level of the effect that will be applied (default value : 5) */
-         size : 200, /* optional, you can resize your image while applying the effect (default value : 100%) */
-      };
-      var callback = function (error) {
-         if(!error) {
-             console.log("The effect was applied to your image !");
-         }
-      console.log(error);
-      }
-
-      effect.blur(options, callback);
-
     io.emit('newPicture',('target.jpg')); ///Lastly, the new name is send to the client web browser.
     /// The browser will take this new name and load the picture from the public folder.
 
